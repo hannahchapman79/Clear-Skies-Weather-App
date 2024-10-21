@@ -12,15 +12,15 @@ class WeatherPage extends StatefulWidget {
   WeatherPageState createState() => WeatherPageState();
 }
 
-class WeatherPageState extends State<WeatherPage> { 
+class WeatherPageState extends State<WeatherPage> {
   Map<String, dynamic>? weatherData;
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
     fetchWeather();
   }
-
 
   Future<void> fetchWeather([String? city]) async {
     String? apiKey = dotenv.env['WEATHER_API_KEY'];
@@ -34,6 +34,7 @@ class WeatherPageState extends State<WeatherPage> {
       if (response.statusCode == 200) {
         setState(() {
           weatherData = jsonDecode(response.body);
+          isLoading = false;
         });
       }
     } catch (e) {
@@ -41,7 +42,7 @@ class WeatherPageState extends State<WeatherPage> {
     }
   }
 
-    Map<String, String> convertDate(Map<String, dynamic> weatherData) {
+  Map<String, String> convertDate(Map<String, dynamic> weatherData) {
     int timezoneShiftInSeconds = weatherData["timezone"];
     int timestamp = weatherData["dt"];
 
@@ -52,7 +53,7 @@ class WeatherPageState extends State<WeatherPage> {
     DateTime localTime = utcTime.add(timezoneOffset);
 
     String formattedDate = DateFormat('EEE d').format(localTime);
-    String daySuffix = getDayOfMonthSuffix(localTime.day); 
+    String daySuffix = getDayOfMonthSuffix(localTime.day);
     String formattedMonth = DateFormat('MMMM').format(localTime);
 
     String formattedTime = DateFormat('HH:mm').format(localTime);
@@ -82,35 +83,45 @@ class WeatherPageState extends State<WeatherPage> {
     }
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     Map<String, String> dateTime = convertDate(weatherData!);
+    if (isLoading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator.adaptive()),
+      );
+    }
+
+    if (weatherData == null) {
+      return const Scaffold(
+        body: Center(child: Text('Error loading weather data')),
+      );
+    }
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Clear Skies Weather App'),
       ),
-      body:
-          Center(
-            child: 
-              Expanded(
-                child: WeatherOverviewItem(
-                  date: dateTime["date"]!,
-                  time: dateTime["time"]!,
-                  location: weatherData!["name"],
-                  temperature: weatherData!["main"]["temp"].toInt(),
-                  apiIconCode: weatherData!["weather"][0]["icon"],
-                  description: weatherData!["weather"][0]["description"],
-                  feelsLike: weatherData!["main"]["feels_like"].toInt(),
-                  onCityChanged: (newCity) {
-                    setState(() {
-                    });
-                    fetchWeather(newCity);
-                  },
-                ),
-              ),
+      body: Center(
+        child: Expanded(
+          child: WeatherOverviewItem(
+            date: dateTime["date"]!,
+            time: dateTime["time"]!,
+            location: weatherData!["name"],
+            temperature: weatherData!["main"]["temp"].toInt(),
+            apiIconCode: weatherData!["weather"][0]["icon"],
+            description: weatherData!["weather"][0]["description"],
+            feelsLike: weatherData!["main"]["feels_like"].toInt(),
+            onCityChanged: (newCity) {
+              setState(() {
+                isLoading = true;
+              });
+              fetchWeather(newCity);
+            },
           ),
+        ),
+      ),
     );
   }
-  }
+}
