@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
+import 'package:clearskies/weather_overview_card.dart';
 
 class WeatherPage extends StatefulWidget {
   const WeatherPage({super.key});
@@ -80,4 +81,36 @@ class WeatherPageState extends State<WeatherPage> {
         return 'th';
     }
   }
-}
+
+   @override
+  Widget build(BuildContext context) {
+    Map<String, String> dateTime = convertDate(weatherData!);
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text('Clear Skies Weather App'),
+      ),
+      body:
+          Center(
+            child: 
+              Expanded(
+                child: WeatherOverviewItem(
+                  date: dateTime["date"]!,
+                  time: dateTime["time"]!,
+                  location: weatherData!["name"],
+                  temperature: weatherData!["main"]["temp"].toInt(),
+                  apiIconCode: weatherData!["weather"][0]["icon"],
+                  description: weatherData!["weather"][0]["description"],
+                  feelsLike: weatherData!["main"]["feels_like"].toInt(),
+                  onCityChanged: (newCity) {
+                    setState(() {
+                    });
+                    fetchWeather(newCity);
+                  },
+                ),
+              ),
+          ),
+    );
+  }
+  }
