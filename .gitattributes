@@ -1,2 +1,5 @@
 android/** linguist-vendored
 ios/** linguist-vendored
+linux/** linguist-vendored
+windows/** linguist-vendored
+maxos/** linguist-vendored
