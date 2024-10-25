@@ -22,7 +22,7 @@ class WeatherOverviewItem extends StatelessWidget {
       required this.onCityChanged,
       required this.feelsLike});
 
-     Map<String, Map<String, dynamic>> _getWeatherIconColour() {
+  Map<String, Map<String, dynamic>> _getWeatherIconColour() {
     return {
       "01d": {
         "icon": const Icon(CupertinoIcons.sun_max_fill,
@@ -114,5 +114,118 @@ class WeatherOverviewItem extends StatelessWidget {
             size: 150, color: Color.fromRGBO(128, 49, 255, 1))
       },
     };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Map<String, Map<String, dynamic>> weatherIconMap = _getWeatherIconColour();
+
+    final weatherData = weatherIconMap[apiIconCode] ??
+        {"icon": const Icon(Icons.error), "color": Colors.blue.shade300};
+
+    final weatherIcon = weatherData["icon"] as Widget;
+
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            color: Colors.transparent,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.location_on_outlined,
+                        size: 36,
+                      ),
+                      SizedBox(
+                        width: 220,
+                        child: FocusScope(
+                          child: TextField(
+                            controller: TextEditingController(text: location),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              suffixIcon: IconButton(
+                                icon: const Icon(Icons.edit),
+                                onPressed: () {
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
+                                },
+                              ),
+                            ),
+                            style: const TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.normal,
+                            ),
+                            textAlign: TextAlign.center,
+                            onSubmitted: onCityChanged,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    date,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    time,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  weatherIcon,
+                  const SizedBox(height: 30),
+                  Text(
+                    '$temperature°',
+                    style: const TextStyle(
+                      fontSize: 88,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    description.toUpperCase(),
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black54,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 14),
+                  Text(
+                    "Feels like $feelsLike°",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black54,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

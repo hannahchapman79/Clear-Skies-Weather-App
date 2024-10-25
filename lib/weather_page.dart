@@ -16,6 +16,7 @@ class WeatherPage extends StatefulWidget {
 class WeatherPageState extends State<WeatherPage> { 
   Map<String, dynamic>? weatherData;
   bool isLoading = true;
+  final TextEditingController cityController = TextEditingController();
 
   @override
   void initState() {
