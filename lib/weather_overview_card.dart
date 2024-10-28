@@ -129,98 +129,118 @@ class WeatherOverviewItem extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.all(30.0),
-          child: Card(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
+          child: Container( 
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: <Color>[
+                  Colors.white.withOpacity(1),
+                  Colors.white.withOpacity(1),
+                  Colors.white.withOpacity(1),
+                  Colors.white.withOpacity(1),
+                  Colors.white.withOpacity(1),
+                  Colors.white.withOpacity(0.95),
+                  Colors.white.withOpacity(0.9),
+                  Colors.white.withOpacity(0.9),
+                  Colors.white.withOpacity(0.85),
+                ],
+              ),
             ),
-            color: Colors.transparent,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.location_on_outlined,
-                        size: 36,
-                      ),
-                      SizedBox(
-                        width: 220,
-                        child: FocusScope(
-                          child: TextField(
-                            controller: TextEditingController(text: location),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              suffixIcon: IconButton(
-                                icon: const Icon(Icons.edit),
-                                onPressed: () {
-                                  FocusScope.of(context)
-                                      .requestFocus(FocusNode());
-                                },
+            child: Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              color: Colors.transparent,
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.location_on_outlined,
+                          size: 36,
+                        ),
+                        SizedBox(
+                          width: 220,
+                          child: FocusScope(
+                            child: TextField(
+                              controller: TextEditingController(text: location),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                suffixIcon: IconButton(
+                                  icon: const Icon(Icons.edit),
+                                  onPressed: () {
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
+                                  },
+                                ),
                               ),
+                              style: const TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.normal,
+                              ),
+                              textAlign: TextAlign.center,
+                              onSubmitted: onCityChanged,
                             ),
-                            style: const TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.normal,
-                            ),
-                            textAlign: TextAlign.center,
-                            onSubmitted: onCityChanged,
                           ),
                         ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      date,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    date,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    time,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
+                    const SizedBox(height: 4),
+                    Text(
+                      time,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 30),
-                  weatherIcon,
-                  const SizedBox(height: 30),
-                  Text(
-                    '$temperature°',
-                    style: const TextStyle(
-                      fontSize: 88,
-                      fontWeight: FontWeight.w400,
+                    const SizedBox(height: 30),
+                    weatherIcon,
+                    const SizedBox(height: 30),
+                    Text(
+                      '$temperature°',
+                      style: const TextStyle(
+                        fontSize: 88,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    description.toUpperCase(),
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black54,
+                    const SizedBox(height: 10),
+                    Text(
+                      description.toUpperCase(),
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black54,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 14),
-                  Text(
-                    "Feels like $feelsLike°",
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black54,
+                    const SizedBox(height: 14),
+                    Text(
+                      "Feels like $feelsLike°",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black54,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
