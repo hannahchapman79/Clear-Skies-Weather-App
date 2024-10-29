@@ -1,6 +1,6 @@
 # Clear Skies Weather App
 
-Demo video: [Clear Skies Weather App Demo]([https://pages.github.com/](https://drive.google.com/file/d/1ae1AzyVsOoVHljPtHj8L2Hk7fjC0QbeS/view?usp=sharing))
+Demo video: [Clear Skies Weather App Demo]([url](https://drive.google.com/file/d/1ae1AzyVsOoVHljPtHj8L2Hk7fjC0QbeS/view?usp=sharing))
 
 ## Description
 
